@@ -1,0 +1,164 @@
+﻿@page "/"
+@using Class
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Frise Chronologique Super</h1>
+    <label>@errorMessage</label>
+    @if (listEvents != null && listEvents.Count > 0)
+    {
+        <div class="events">
+            @for (int i = 0; i < listEvents.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    <div class="top-event">
+                        <label class="title">
+                            @listEvents[i].Title
+                        </label>
+                        <div class="line-logo-date-div">
+                            <label class="date">@listEvents[i].EventDate.ToString("yyyy MM")</label>
+                            <div class="icon" style="background-color: @GetIconColor(listEvents[i].Category)">
+                                <i class="@GetIcon(listEvents[i].Category)"></i>
+                            </div>
+                            @if(listEvents[i].IsLong)
+                            {
+                                <div class="vertical-line" style="background-color: @GetIsLongColor()"></div>
+                            }
+                            else
+                            {
+                                <div class="vertical-line"></div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="center">
+            <div class="flex">
+            @for (int i = 0; i < listEvents.Count; i++)
+            {
+                if (i % 2 == 0 && !listEvents[i].IsLong)
+                {
+                    <div class="small-vertical-line-top"></div>
+                }
+                if ( i % 2 == 0 && listEvents[i].IsLong && listEvents[i].EventEnd != null)
+                {
+                    <div class="long-event" style="background-color: @GetIsLongColor(); width: @GetWidthLongEvent(i, listEvents[i].EventEnd)px;"></div>
+                }
+            }
+            </div>
+            <div class="horizontal-line">
+                @for (int i = 0; i < listEvents.Count; i++)
+                {
+                    <div></div>
+                }
+            </div>
+            <div class="flex">
+            @for (int i = 0; i < listEvents.Count; i++)
+            {
+                if (i % 2 == 1 && !listEvents[i].IsLong && !(i<13 && i> 18))
+                {
+                    <div class="small-vertical-line-bot"></div>
+                }
+
+                if (i % 2 == 1 && listEvents[i].IsLong && listEvents[i].EventEnd != null)
+                {
+                    <div class="long-event" style="background-color: @GetIsLongColor(); width: @GetWidthLongEvent(i, listEvents[i].EventEnd)px;"></div>
+                }
+            }
+            </div>
+        </div>
+        <div class="events">
+            @for (int i = 0; i < listEvents.Count; i++)
+            {
+                if (i % 2 == 1)
+                {
+                    <div class="bot-event">
+                        <div class="line-logo-date-div">
+                            @if(listEvents[i].IsLong)
+                            {
+                                <div class="vertical-line" style="background-color: @GetIsLongColor()"></div>
+                            }
+                            else
+                            {
+                                <div class="vertical-line"></div>
+                            }
+                            <div class="icon" style="background-color: @GetIconColor(listEvents[i].Category)">
+                                <i class="@GetIcon(listEvents[i].Category)"></i>
+                            </div>
+                            <label class="date">@listEvents[i].EventDate.ToString("yyyy MM")</label>
+                        </div>
+                        <label class="title">
+                            @listEvents[i].Title
+                        </label>
+                    </div>
+                }
+            }
+        </div>
+    }
+</body>
+
+@code {
+    List<Event>? listEvents = null;
+    public string errorMessage = "";
+
+    public string GetIcon(string category)
+    {
+        return category switch
+        {
+            "famille" => "fa-solid fa-child-reaching",
+            "voyage" => "fa-solid fa-suitcase-rolling",
+            "etudes/metiers" => "fa-solid fa-graduation-cap",
+            "sante" => "fa-solid fa-heart-pulse",
+            _ => "fa-solid fa-calendar",
+        };
+    }
+
+    public string GetIconColor(string category)
+    {
+        return category switch
+        {
+            "famille" => "#ADE1E5",
+            "voyage" => "#E5D0E3",
+            "etudes/metiers" => "#0081A7",
+            "sante" => "#99D19C",
+            _ => "#CCCCCC", // Couleur par défaut si la catégorie est inconnue
+        };
+    }
+
+    public string GetMarginLeftLongEvent(int id)
+    {
+        int index = listEvents.FindIndex(e => e.EventId == id);
+        // Suppose un décalage de 110px par index
+        int nbPx = 110 * id + 10;
+        return nbPx.ToString();
+    }
+
+    public string GetWidthLongEvent(int id, int? idEnd)
+    {
+        int indexEnd = listEvents.FindIndex(e => e.EventId == idEnd.Value);
+        int nbPx = 110 * (indexEnd - id);
+        return nbPx.ToString();
+    }
+
+    public string GetIsLongColor()
+    {
+        return "#A288A6";
+    }
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            listEvents = Event.GetListEvents();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+}
