@@ -3,13 +3,15 @@ ul.timeline-list {
     position: relative;
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 
 ul.timeline-list li {
     position: relative;
-    clear: both;
-    display: table;
+    display: flex;
+    align-items: flex-start;
     padding: 20px 0; /* Ajoute un peu d'espace autour des éléments de la timeline */
+    box-sizing: border-box;
 }
 
 /* La ligne centrale de la timeline */
@@ -25,7 +27,7 @@ ul.timeline-list li::after {
 /* La ligne reliant chaque élément */
 ul.timeline-list li:not(:last-child)::after {
     height: 80%; /* Hauteur totale incluant un peu d'espace */
-    top: 60%; /* Positionne la ligne juste en dessous du cercle */
+    top: 60%; /* Positionne la ligne du haut en bas */
 }
 
 /* Style des éléments de la timeline */
@@ -33,19 +35,20 @@ ul.timeline-list li:not(:last-child)::after {
     border: none;
     background-color: white;
     max-height: 300px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 15px; /* Réduit le padding pour mieux gérer les espaces */
+    width: calc(50% - 20px); /* Ajuste la largeur avec un espace pour les marges */
 }
 
-ul.timeline-list li .timeline_content {
-    width: 45%;
-    color: #333;
-    padding: 30px;
-    float: left;
+/* Alignement des contenus à gauche et droite */
+ul.timeline-list li:nth-child(odd) .timeline_content {
+    margin-right: auto; /* Aligne à gauche */
     text-align: right;
 }
 
-ul.timeline-list li:nth-child(2n) .timeline_content {
-    float: right;
+ul.timeline-list li:nth-child(even) .timeline_content {
+    margin-left: auto; /* Aligne à droite */
     text-align: left;
 }
 
@@ -71,12 +74,13 @@ ul.timeline-list li::before {
     color: black;
 }
 
-@media (max-width: 991.8px)
-{
+/* Media Queries */
 
+/* Écrans de tablettes et petites tailles d'écrans */
+@media (max-width: 992px) {
 }
 
-@media (min-width: 992px)
-{
+/* Écrans de téléphones mobiles */
+@media (max-width: 768px) {
 
 }
