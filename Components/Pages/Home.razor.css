@@ -1,86 +1,41 @@
-/* Positionnement des éléments dans la timeline */
-ul.timeline-list {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+h1
+{
+    font-size: 40px;
 }
 
-ul.timeline-list li {
-    position: relative;
+.header
+{
     display: flex;
-    align-items: flex-start;
-    padding: 20px 0; /* Ajoute un peu d'espace autour des éléments de la timeline */
-    box-sizing: border-box;
+    flex-direction: column;
+}
+.menu
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    margin-bottom: 20px;
 }
 
-/* La ligne centrale de la timeline */
-ul.timeline-list li::after {
-    content: "";
-    position: absolute;
-    width: 2px;
-    background-color: gray;
-    left: 50%;
-    transform: translateX(-50%);
+.clickable-picture
+{
+    border: none; 
+    padding: 0;   
+    background: none; 
+    cursor: pointer;
 }
 
-/* La ligne reliant chaque élément */
-ul.timeline-list li:not(:last-child)::after {
-    height: 80%; /* Hauteur totale incluant un peu d'espace */
-    top: 60%; /* Positionne la ligne du haut en bas */
-}
-
-/* Style des éléments de la timeline */
-.timeline_content {
-    border: none;
-    background-color: white;
-    max-height: 300px;
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding: 15px; /* Réduit le padding pour mieux gérer les espaces */
-    width: calc(50% - 20px); /* Ajuste la largeur avec un espace pour les marges */
-}
-
-/* Alignement des contenus à gauche et droite */
-ul.timeline-list li:nth-child(odd) .timeline_content {
-    margin-right: auto; /* Aligne à gauche */
-    text-align: right;
-}
-
-ul.timeline-list li:nth-child(even) .timeline_content {
-    margin-left: auto; /* Aligne à droite */
-    text-align: left;
-}
-
-/* Les cercles de la timeline */
-ul.timeline-list li::before {
-    content: "";
-    width: 25px;
-    height: 25px;
-    border: solid 1px gray;
-    position: absolute;
-    left: 50%;
-    top: 50%; /* Positionne le cercle au centre vertical de l'élément */
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: #fff;
-}
-
-/* Style des dates */
-.timeline_content span {
-    font-size: 18px;
-    font-weight: 500;
-    font-family: poppins;
+.clickable-picture > i
+{
+    font-size: 40px;
     color: black;
 }
 
-/* Media Queries */
-
-/* Écrans de tablettes et petites tailles d'écrans */
-@media (max-width: 992px) {
-}
-
-/* Écrans de téléphones mobiles */
-@media (max-width: 768px) {
-
+.profile-picture
+{
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 50%;
+    object-fit: cover;
 }
