@@ -70,7 +70,50 @@ namespace Chronologie.Class
                 }
                 
             }
+            return events;
+        }
 
+        public static List<Event> GetListEventsTag(string? tag)
+        {
+            List<Event> events= new List<Event>();
+
+            using(MySqlConnection c = new MySqlConnection(Global.ConnexionString))
+            {
+                c.Open();
+                string req = "SELECT * FROM events WHERE category = @tag ORDER BY event_date ASC";
+                try
+                {
+                    using(MySqlCommand cmd = new MySqlCommand(req, c))
+                    {
+                        cmd.Parameters.AddWithValue("@tag", tag);
+
+                        using(MySqlDataReader r = cmd.ExecuteReader())
+                        {
+                            while(r.Read())
+                            {
+                                Event e = new Event(r.GetInt32(0), 
+                                                    r.GetInt32(1), 
+                                                    r.GetString(2), 
+                                                    r.GetString(3), 
+                                                    r.GetDateTime(4), 
+                                                    r.GetString(5), 
+                                                    r.GetString(6), 
+                                                    r.GetString(7), 
+                                                    r.GetDateTime(8), 
+                                                    r.GetDateTime(9), 
+                                                    r.GetBoolean(10), 
+                                                    r.IsDBNull(11) ? null : r.GetInt32(11));
+                                events.Add(e);
+                            }
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception("GetListEvents " + ex.Message);
+                }
+                
+            }
             return events;
         }
     }

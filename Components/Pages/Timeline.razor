@@ -1,4 +1,4 @@
-﻿@page "/Timeline"
+﻿@page "/Timeline/{tag}"
 @using Class
 
 <head>
@@ -10,8 +10,10 @@
 			<div class="row">
                <div class="col-xl-12">
                   <ul class="timeline-list">
-                     @foreach(Event e in listEvents)
-                     {
+                    @if(listEvents != null)
+                    {
+                        @foreach(Event e in listEvents)
+                        {
                         <li>
                             <div class="timeline_content">
                                 <i class=@GetIcon(e.Category)></i>
@@ -20,7 +22,8 @@
                                    <p>@e.Description</p>
                             </div>
                         </li>
-                     }
+                        }
+                    }
                   </ul>
                </div>
             </div>
@@ -28,6 +31,8 @@
 	  </section>
 
 @code {
+    [Parameter]
+    public string? tag {get; set;}
     List<Event>? listEvents = null;
     public string errorMessage = "";
 
@@ -59,7 +64,14 @@
     {
         try
         {
-            listEvents = Event.GetListEvents();
+            if(tag != null)
+            {
+                listEvents = Event.GetListEventsTag(tag);
+            }
+            else
+            {
+                listEvents = Event.GetListEvents();
+            }
         }
         catch (Exception ex)
         {

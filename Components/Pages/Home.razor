@@ -1,10 +1,12 @@
 @page "/"
 @using Class
+@using Components.Layout
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/flickity/flickity.css media="screen">
 </head>
-<section>
+<body>
     <div class="header">
         <div class="menu">
             <button class="clickable-picture">
@@ -16,4 +18,43 @@
         </div>
         <h1>Bienvenue Romain</h1>
     </div>
-</section>
+    <h2 class="section-title">Mes frises</h2>
+    <div class="horizontal-center">
+        <section class="timeline-cards-section">
+            @if(tags != null)
+            {
+                @foreach(Tag tag in tags)
+                {
+                <div class="timeline-card" @onclick="e => onTimelineCardClicked(tag)">
+                    <h3>@tag.TagName</h3>
+                    <p>@tag.Description</p>
+                </div>
+                }
+            }
+            
+        </section>
+    </div>
+</body>
+
+@code
+{
+    private List<Tag>? tags = null;
+
+    [Inject]
+    NavigationManager? NavigationManager {get; set;}
+    private void onTimelineCardClicked(Tag tag)
+    {
+        string tagId = tag.Id;
+        NavigationManager?.NavigateTo($"/Timeline/{tagId}");
+    }
+    protected override void OnInitialized()
+    {
+        tags = new List<Tag>
+        {
+            new Tag ("famille", "Famille", "Evenements liés a la famille", "images/all_life.jpg"),
+            new Tag ("sante", "Sante", "Evenements liés a la santé", "images/all_life.jpg" ),
+            new Tag ("etudes/metiers", "Travail", "Evenements liés au travail", "images/all_life.jpg"),
+            new Tag ("voyage", "Voyages", "Evenements liés aux voyages", "images/all_life.jpg"),
+        };
+    }
+}
