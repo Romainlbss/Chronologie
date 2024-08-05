@@ -49,12 +49,6 @@
     }
     protected override void OnInitialized()
     {
-        tags = new List<Tag>
-        {
-            new Tag ("famille", "Famille", "Evenements liés a la famille", "images/all_life.jpg"),
-            new Tag ("sante", "Sante", "Evenements liés a la santé", "images/all_life.jpg" ),
-            new Tag ("etudes/metiers", "Travail", "Evenements liés au travail", "images/all_life.jpg"),
-            new Tag ("voyage", "Voyages", "Evenements liés aux voyages", "images/all_life.jpg"),
-        };
+        tags = Tag.GetTags();
     }
 }
