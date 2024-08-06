@@ -1,0 +1,30 @@
+@page "/addEvent"
+@using Class
+
+
+<div>
+    <label>
+        Nom de la categorie
+        <input type="text" @bind=name required >
+    </label>
+    <label>
+        Description
+        <input type="text" @bind=description required >
+    </label>
+    <button @onclick=onValiderAjoutTagClicked>Valider</button>
+</div>
+
+@code
+{
+    string name = "";
+    string description = "";
+    static bool validerClicked = false;
+    [CascadingParameter] Blazored.Modal.BlazoredModalInstance? blazoredModalInstance {get; set;}
+
+
+    private void onValiderAjoutTagClicked()
+    {
+        blazoredModalInstance?.CloseAsync(ModalResult.Ok(true));
+        Tag.AddTag(name, description, "");
+    }
+}

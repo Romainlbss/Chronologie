@@ -48,13 +48,13 @@ img {
 
 .horizontal-center {
     display: flex;
+    flex-direction: column;
     justify-content: center; 
 }
 
 .timeline-cards-section {
     display: flex;
     flex-wrap: wrap; 
-    justify-content: center; 
     gap: 20px;
     padding: 20px; 
 }
@@ -77,4 +77,34 @@ img {
 .section-title
 {
     color: darkblue;
+}
+
+.button-tags-section
+{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+/*Bouton voir plus de tag*/
+.button-tags-section > button:first-of-type
+{
+    padding: 5px 15px;
+    background-color: #ABC4AB;
+    border: none;
+    border-radius: 20px;
+    color: black
+}
+/*Bouton ajouter un tag*/
+.button-tags-section >button:last-of-type
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #ABC4AB;
+    color: black
 }

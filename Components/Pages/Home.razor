@@ -1,6 +1,8 @@
-@page "/"
-@using Class
-@using Components.Layout
+@using Class;
+@using Modals;
+@using Components.Layout;
+@inject IModalService modal;
+@page "/";
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -23,32 +25,82 @@
         <section class="timeline-cards-section">
             @if(tags != null)
             {
+                int index = 0;
                 @foreach(Tag tag in tags)
                 {
-                <div class="timeline-card" @onclick="e => onTimelineCardClicked(tag)">
+                @if(index <= 3 || isAllTagsSelected)
+                {
+                    <div class="timeline-card" @onclick="e => onTimelineCardClicked(tag)">
                     <h3>@tag.TagName</h3>
                     <p>@tag.Description</p>
+                    <button @onclick="e => onDeleteTagClicked(tag)">Delete</button>
                 </div>
                 }
+                index ++;
+                }
             }
-            
         </section>
+        <div class="button-tags-section">
+            <button @onclick=onAllTagsClicked>@tagButtonText</button>
+            <button @onclick="onAddTagClicked">+</button>
+        </div>
     </div>
 </body>
 
 @code
 {
     private List<Tag>? tags = null;
+    private bool isAllTagsSelected = false;
+    private string tagButtonText = "Voir +";
 
     [Inject]
     NavigationManager? NavigationManager {get; set;}
     private void onTimelineCardClicked(Tag tag)
     {
-        string tagId = tag.Id;
-        NavigationManager?.NavigateTo($"/Timeline/{tagId}");
+        string tagName = tag.TagName;
+        NavigationManager?.NavigateTo($"/Timeline/{tagName}");
+    }
+
+    private void onDeleteTagClicked(Tag tag)
+    {
+
+    }
+
+    private void onAllTagsClicked()
+    {
+        isAllTagsSelected = !isAllTagsSelected;
+        if(isAllTagsSelected)
+        {
+            tagButtonText = "Voir -";
+        }
+        else
+        {
+            tagButtonText = "Voir +";
+        }
+
+        StateHasChanged();
+    }
+
+    private async void onAddTagClicked()
+    {
+        ModalResult modalResult = await modal.Show<AddEvent>().Result;
+        
+        //Une fois la fenetre de popup fermée, si on a ajouté une categorie, on récupère les categories dans la base de donnée 
+        if(modalResult.Confirmed)
+        {
+            tags = Tag.GetTags();
+            StateHasChanged();
+        }
     }
     protected override void OnInitialized()
     {
-        tags = Tag.GetTags();
+        try
+        {
+            tags = Tag.GetTags();
+        }
+        catch(Exception ex)
+        {
+            modal.Show<ErreurPopup>(ex.Message);
+        }
     }
 }
