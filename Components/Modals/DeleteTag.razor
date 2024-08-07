@@ -1,10 +1,18 @@
+@using Class
+
 <h1>Voulez vous vraiment supprimer ce tag ?</h1>
 <button @onclick=onVliderDeleteClicked>Valider</button>
 <button>Retour</button>
 
 @code
 {
+    [Parameter]
+    public Tag tag {get; set;}
+    [CascadingParameter] Blazored.Modal.BlazoredModalInstance? blazoredModalInstance {get; set;}
+
     private void onVliderDeleteClicked()
     {
+        Tag.DeleteTag(tag.Id);
+        blazoredModalInstance?.CloseAsync(ModalResult.Ok(true));
     }
 }

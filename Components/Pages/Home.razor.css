@@ -46,7 +46,7 @@ img {
     object-fit: cover;
 }
 
-.horizontal-center {
+.section-horizontal-center {
     display: flex;
     flex-direction: column;
     justify-content: center; 
@@ -76,7 +76,7 @@ img {
 
 .section-title
 {
-    color: darkblue;
+    padding-right: 10px;
 }
 
 .button-tags-section
@@ -107,4 +107,30 @@ img {
     border: none;
     background-color: #ABC4AB;
     color: black
+}
+
+.section-head
+{
+    display: flex;
+}
+
+.i-button
+{
+    border: none;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+.i-button > i
+{
+    font-size: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+.tag-card-header
+{
+    display: flex;
+    justify-content: space-between;
 }

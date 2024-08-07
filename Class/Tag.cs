@@ -52,7 +52,7 @@ namespace Chronologie.Class
             }
             return tags;
         }
-        public static void AddTag(string name, string description, string imageUrl)
+        public static void AddTag(string? name, string? description, string imageUrl)
         {   
             using(MySqlConnection c = new MySqlConnection(Global.ConnexionString))
             {

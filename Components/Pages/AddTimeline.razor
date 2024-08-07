@@ -1,10 +1,10 @@
-@page "/addEvent"
+@page "/AddTimeline"
 @using Class
 
-
+<h1>Ajouter une nouvelle frise</h1>
 <div>
     <label>
-        Nom de la categorie
+        Nom de la frise
         <input type="text" @bind=name required >
     </label>
     <label>
@@ -16,15 +16,14 @@
 
 @code
 {
-    string name = "";
-    string description = "";
-    static bool validerClicked = false;
-    [CascadingParameter] Blazored.Modal.BlazoredModalInstance? blazoredModalInstance {get; set;}
-
+    string? name = null;
+    string? description = null;
+    [Inject]
+    NavigationManager? NavigationManager {get; set;}
 
     private void onValiderAjoutTagClicked()
     {
-        blazoredModalInstance?.CloseAsync(ModalResult.Ok(true));
         Tag.AddTag(name, description, "");
+        NavigationManager?.NavigateTo($"/AddEvent/{name}");
     }
 }

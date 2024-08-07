@@ -1,0 +1,68 @@
+@page "/AddEvent/{timelineName}"
+@using Class
+@using Chronologie.Components.Modals
+@using Blazored.Modal
+@inject IModalService modal
+
+<div>Ajouter un évènement a votre frise @timelineName</div>
+
+
+<label>
+    Titre
+    <input @bind=titre required/>
+</label>
+<label>
+    Description
+    <input @bind=description required/>
+</label>
+<label>
+    Date
+    <input type="date" @bind=date required/>
+</label>
+<button @onclick=onAddEventClicked>Valider</button>
+@if(eventsToAdd.Count() > 0)
+{
+    @foreach(Event e in eventsToAdd)
+    {
+        <label>@e.Title</label>
+    }
+    <button @onclick=onAddAllEventsClicked>Ajouter les evenements</button>
+}
+
+@code
+{
+    [Parameter]
+    public string? timelineName {get; set;}
+    public List<Event> eventsToAdd= new List<Event>();
+
+    private string? titre = null;
+    private string? description = null;
+    private DateTime date = DateTime.Today;
+
+    private void onAddEventClicked()
+    {
+        Event e = new Event(0, 1, titre, description, date, timelineName, "France", "", date, date);
+        eventsToAdd.Add(e);
+
+        titre = null;
+        description = null;
+        date = DateTime.Today;
+        
+        StateHasChanged();
+    }
+
+    private void onAddAllEventsClicked()
+    {
+        try
+        {
+            foreach(Event e in eventsToAdd)
+            {
+                Event.AddEvent(e);
+            }
+        }
+        catch(Exception ex)
+        {
+            Global.ShowErrorPopup(ex.Message, modal);
+        }
+    }
+}    
